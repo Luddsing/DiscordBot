@@ -12,8 +12,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
-
-
+import org.w3c.dom.Text;
 
 
 public class BotListener extends ListenerAdapter {
@@ -75,6 +74,10 @@ public class BotListener extends ListenerAdapter {
                 break;
             case "!skip":
                 skipTrack(channel);
+                break;
+            case "!leave":
+                leaveChannel(event, channel);
+                clearQueue(channel);
 
         }
 
@@ -94,6 +97,14 @@ public class BotListener extends ListenerAdapter {
         channel.sendMessage("Skipped to the next track.").queue();
     }
 
+    private void leaveChannel(MessageReceivedEvent event, final TextChannel channel){
+
+        leaveChannel(event); // Use event here
+
+        channel.sendMessage("Left channel and cleared queue.").queue();
+
+    }
+
     private void resumeTrack(TextChannel channel) {
         if (!player.isPaused()) {
             channel.sendMessage("Playback is not paused.").queue();
@@ -109,7 +120,7 @@ public class BotListener extends ListenerAdapter {
     }
 
     private void loadAndPlay(MessageReceivedEvent event, final TextChannel channel, final String trackUrl) {
-        joinChannel(event); // Use event here
+        joinChannel(event);
         channel.sendMessage("Joining a channel!");
         playerManager.loadItemOrdered(player, trackUrl, new AudioLoadResultHandler() {
             @Override
@@ -159,6 +170,22 @@ public class BotListener extends ListenerAdapter {
             }
         } else {
             System.out.println("User is not in any audio channel");
+        }
+    }
+
+    private void leaveChannel(MessageReceivedEvent event) {
+        AudioManager audioManager = event.getGuild().getAudioManager();
+
+        if (audioManager.isConnected() && event.getMember().getVoiceState().inAudioChannel()) {
+            AudioChannel voiceChannel = event.getMember().getVoiceState().getChannel();
+            //checks if bot is connected
+            if (voiceChannel != null) {
+                audioManager.closeAudioConnection();
+
+                // Set the AudioPlayerSendHandler to the AudioManager
+                audioManager.setSendingHandler(new AudioPlayerSendHandler(player));
+
+            }
         }
     }
 
