@@ -14,9 +14,10 @@ The bot is currently constructed to handle the following user commands:
 !play link
  - The bot joins and plays the audiofile from the link a user has attached. If a audiofile already and the command is used again, the new file is added to a queue.
 
-
+!join 
+ - The bot joins the chanel without playing anything
 !leave
- - The bot leaves the channel
+ - The bot leaves the channel and clears the queue
 
 !pause
  - The audioplayback is paused
