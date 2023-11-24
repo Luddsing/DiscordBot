@@ -21,7 +21,7 @@ public class Main{
 
         //bot build
 
-        String botToken = "MTEyMTczODc0NjQ4ODk2MzExMg.GotyPQ.OY5ERCn172zXT2b7GCj5SHfo9L_g2AGzzIuB3Y";
+        String botToken = "";
         JDABuilder jdaBuilder = JDABuilder.createDefault(botToken).enableIntents(GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_PRESENCES, GatewayIntent.MESSAGE_CONTENT).addEventListeners(new botCommands());
         jdaBuilder.setActivity(Activity.playing("Type !play"));
         jdaBuilder.addEventListeners(new BotListener());

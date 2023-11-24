@@ -12,7 +12,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
+
 
 
 public class BotListener extends ListenerAdapter {
@@ -78,6 +78,9 @@ public class BotListener extends ListenerAdapter {
             case "!leave":
                 leaveChannel(event, channel);
                 clearQueue(channel);
+                break;
+            case "!join":
+                joinChannel(event);
 
         }
 
@@ -162,9 +165,9 @@ public class BotListener extends ListenerAdapter {
 
                 // Set the AudioPlayerSendHandler to the AudioManager
                 audioManager.setSendingHandler(new AudioPlayerSendHandler(player));
-
+                String channelName = voiceChannel.getName();
                 System.out.println("Bot joining channel: " + voiceChannel.getName());
-                event.getChannel().sendMessage("Bot joining channel: " + voiceChannel).queue();
+                event.getChannel().sendMessage("Bot joining channel: " + channelName).queue();
             } else {
                 System.out.println("Voice channel is null");
             }
@@ -180,9 +183,11 @@ public class BotListener extends ListenerAdapter {
             AudioChannel voiceChannel = event.getMember().getVoiceState().getChannel();
             //checks if bot is connected
             if (voiceChannel != null) {
+                String channelName = voiceChannel.getName();
+                event.getChannel().sendMessage("Bot left channel: " + channelName).queue();
                 audioManager.closeAudioConnection();
 
-                // Set the AudioPlayerSendHandler to the AudioManager
+
                 audioManager.setSendingHandler(new AudioPlayerSendHandler(player));
 
             }
