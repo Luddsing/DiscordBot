@@ -16,6 +16,7 @@ The bot is currently constructed to handle the following user commands:
 
 !join 
  - The bot joins the chanel without playing anything
+  
 !leave
  - The bot leaves the channel and clears the queue
 
